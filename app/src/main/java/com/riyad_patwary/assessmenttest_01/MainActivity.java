@@ -1,10 +1,17 @@
 package com.riyad_patwary.assessmenttest_01;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout mainView;
     Animation fromBottom;
     FadingTextView fadingTextView;
+
+    //
+    EditText productID, productName, productCategory, productDescription, productPrice;
+    Button insertBtn, updateBtn, deleteBtn, viewBtn;
+    SQLiteOpenHelper openHelper;
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
         mainView = (ConstraintLayout) findViewById(R.id.mainView_constraint_id);
         fadingTextView = (FadingTextView) findViewById(R.id.fadingTextView_id);
 
+        productID = findViewById(R.id.product_id_editText_id);
+        productName = findViewById(R.id.product_name_editText_id);
+        productCategory = findViewById(R.id.product_category_editText_id);
+        productDescription = findViewById(R.id.product_description_editText_id);
+        productPrice = findViewById(R.id.product_price_editText_id);
+
+        insertBtn = findViewById(R.id.insert_btn_id);
+        updateBtn = findViewById(R.id.update_btn_id);
+        deleteBtn = findViewById(R.id.delete_btn_id);
+        viewBtn = findViewById(R.id.view_btn_id);
+
         //animation customization...
         background_img.animate().translationY(-2000).setDuration(500).setStartDelay(2500);
         clover.animate().alpha(0).setDuration(2000).setStartDelay(300);
@@ -46,6 +70,28 @@ public class MainActivity extends AppCompatActivity {
         textHome.startAnimation(fromBottom);
         mainView.startAnimation(fromBottom);
 
+        openHelper = new Database_Helper(this);
 
+        insertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Product_Name = productName.getText().toString();
+                String Product_Category = productCategory.getText().toString();
+                String Product_Description = productCategory.getText().toString();
+                String Product_Price = productPrice.getText().toString().trim();
+                db = openHelper.getWritableDatabase();
+                insertData(Product_Name, Product_Category, Product_Category, Product_Price);
+                Toast.makeText(getApplicationContext(),"Data Inserted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+    public void insertData(String Product_Name, String Product_Category, String Product_Description, String Product_Price) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Database_Helper.COLUMN_2, Product_Name);
+        contentValues.put(Database_Helper.COLUMN_3, Product_Category);
+        contentValues.put(Database_Helper.COLUMN_4, Product_Description);
+        contentValues.put(Database_Helper.COLUMN_5, Product_Price);
+        long id = db.insert(Database_Helper.TABLE_NAME,null, contentValues);
     }
 }

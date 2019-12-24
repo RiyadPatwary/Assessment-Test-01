@@ -81,17 +81,55 @@ public class MainActivity extends AppCompatActivity {
                 String Product_Price = productPrice.getText().toString().trim();
                 db = openHelper.getWritableDatabase();
                 insertData(Product_Name, Product_Category, Product_Category, Product_Price);
-                Toast.makeText(getApplicationContext(),"Data Inserted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Data Inserted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db = openHelper.getWritableDatabase();
+                String position = productID.getText().toString().trim();
+                deleteData(position);
+                Toast.makeText(getApplicationContext(), "Data Deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Product_Name = productName.getText().toString();
+                String Product_Category = productCategory.getText().toString();
+                String Product_Description = productCategory.getText().toString();
+                String Product_Price = productPrice.getText().toString().trim();
+                db = openHelper.getWritableDatabase();
+                updateData(Product_Name, Product_Category, Product_Category, Product_Price);
+                Toast.makeText(getApplicationContext(), "Data Updated", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
+
     public void insertData(String Product_Name, String Product_Category, String Product_Description, String Product_Price) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Database_Helper.COLUMN_2, Product_Name);
         contentValues.put(Database_Helper.COLUMN_3, Product_Category);
         contentValues.put(Database_Helper.COLUMN_4, Product_Description);
         contentValues.put(Database_Helper.COLUMN_5, Product_Price);
-        long id = db.insert(Database_Helper.TABLE_NAME,null, contentValues);
+        long id = db.insert(Database_Helper.TABLE_NAME, null, contentValues);
+    }
+
+    public boolean deleteData(String position) {
+        return db.delete(Database_Helper.TABLE_NAME, Database_Helper.COLUMN_1 + "=?", new String[]{position}) > 0;
+    }
+
+    public boolean updateData(String Product_Name, String Product_Category, String Product_Description, String Product_Price) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Database_Helper.COLUMN_2, Product_Name);
+        contentValues.put(Database_Helper.COLUMN_3, Product_Category);
+        contentValues.put(Database_Helper.COLUMN_4, Product_Description);
+        contentValues.put(Database_Helper.COLUMN_5, Product_Price);
+        String position = productID.getText().toString().trim();
+        return db.update(Database_Helper.TABLE_NAME, contentValues, Database_Helper.COLUMN_1 + "=?", new String[]{position}) > 0;
     }
 }

@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         //layout mapping...
-        background_img = (ImageView) findViewById(R.id.backGround_img_id);
-        clover = (ImageView) findViewById(R.id.clover_id);
-        textSplash = (LinearLayout) findViewById(R.id.textSplash_id);
-        textHome = (LinearLayout) findViewById(R.id.textHome_id);
-        mainView = (ConstraintLayout) findViewById(R.id.mainView_constraint_id);
-        fadingTextView = (FadingTextView) findViewById(R.id.fadingTextView_id);
+        background_img = findViewById(R.id.backGround_img_id);
+        clover = findViewById(R.id.clover_id);
+        textSplash = findViewById(R.id.textSplash_id);
+        textHome = findViewById(R.id.textHome_id);
+        mainView = findViewById(R.id.mainView_constraint_id);
+        fadingTextView = findViewById(R.id.fadingTextView_id);
 
         productID = findViewById(R.id.product_id_editText_id);
         productName = findViewById(R.id.product_name_editText_id);
@@ -119,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
                 db = openHelper.getWritableDatabase();
                 updateData(Product_Name, Product_Category, Product_Category, Product_Price);
                 Toast.makeText(getApplicationContext(), "Data Updated", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //click action for View Button
+        viewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(getApplicationContext(), "View...", Toast.LENGTH_SHORT).show();
             }
         });
 
